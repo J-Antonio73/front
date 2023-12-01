@@ -7,14 +7,16 @@ export function QrModal({
 	setCampainMessage,
 	// show,
 }) {
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [qr, setQr] = useState("");
+	const [isClicked, setIsClicked] = useState(true);
 	const handleLoaded = () => {
 		setLoading(false);
 	};
 
 	const generateQR = async () => {
-		// setLoading(true);
+		setLoading(true);
+		setIsClicked(false);
 		fetch("http://localhost:3002/api/generateqr", {
 			method: "POST",
 			body: JSON.stringify({ message: campainMessage }),
@@ -54,13 +56,15 @@ export function QrModal({
 						></button>
 					</div>
 					<div className="modal-body d-flex justify-content-center">
-						<div>
-							<p>
-								Se enviará el mensaje, en caso que se requiera
-								se solicitará escanear el codigo qr.
-							</p>
-						</div>
-						{loading ? (
+						{isClicked ? (
+							<div>
+								<p>
+									Se enviará el mensaje, en caso que se
+									requiera se solicitará escanear el codigo
+									qr.
+								</p>
+							</div>
+						) : loading ? (
 							// Muestra el spinner mientras se carga el QR
 							<div className="spinner-border" role="status">
 								<span className="visually-hidden">
