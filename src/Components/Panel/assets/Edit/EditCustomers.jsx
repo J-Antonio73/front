@@ -54,7 +54,7 @@ export function EditCustomers() {
 		if (Object.keys(errors).length === 0) {
 			setIsSubmit(true);
 
-			// const res = fetch("http://localhost:3001/api/update", {
+			// const res = fetch("http://localhost:3002/api/update", {
 			// 	method: "POST",
 			// 	body: JSON.stringify(formValues),
 			// 	headers: {

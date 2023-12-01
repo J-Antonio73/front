@@ -15,7 +15,7 @@ export function DeleteCustomers() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		fetch("http://localhost:3001/api/delete", {
+		fetch("http://localhost:3002/api/delete", {
 			method: "POST",
 			body: JSON.stringify(customer),
 			headers: {

@@ -20,7 +20,7 @@ function Login() {
 		setFormErrors(validate(formValues));
 		setIsSubmit(true);
 
-		const res = fetch("http://localhost:3001/api/login", {
+		const res = fetch("http://localhost:3002/api/login", {
 			method: "POST",
 			body: JSON.stringify(formValues),
 			headers: {

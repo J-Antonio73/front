@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
 import { useState } from "react";
+import { QrModal } from "../../../Modals/QrModal";
 import "./Campain.css";
 
 export function GenerateCampain() {
@@ -10,29 +11,15 @@ export function GenerateCampain() {
 	const [formErrors, setFormErrors] = useState({});
 	const [isSubmit, setIsSubmit] = useState(false);
 	const [disabled, setDisabled] = useState(true);
+	const [modalShow, setModalShow] = useState(false);
 
-	const submitCampain = () => {
-		if (campainMessage.trim().length > 0) {
-			fetch("http://localhost:3001/api/campain", {
-				method: "POST",
-				body: JSON.stringify({ message: campainMessage }),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-				.then((res) => res.json())
-				.then((data) => {
-					setCampainMessage("");
-					setIsSubmit(false);
-					setFormErrors({});
-				})
-				.catch((err) => console.log(err));
-			return;
-		} else {
+	const submitCampain = async () => {
+		if (!campainMessage.trim().length > 0) {
 			setFormErrors({
 				campainMessage: "Ingrese el mensaje de la campaña",
 			});
 			setIsSubmit(true);
+			return;
 		}
 	};
 
@@ -68,10 +55,18 @@ export function GenerateCampain() {
 					variant="text"
 					disabled={disabled}
 					onClick={submitCampain}
+					data-bs-toggle="modal"
+					data-bs-target="#exampleModal"
 				>
 					Generar campaña
 				</ColorButton>
 			</div>
+			<QrModal
+				campainMessage={campainMessage}
+				setIsSubmit={setIsSubmit}
+				setFormErrors={setFormErrors}
+				setCampainMessage={setCampainMessage}
+			/>
 		</>
 	);
 }

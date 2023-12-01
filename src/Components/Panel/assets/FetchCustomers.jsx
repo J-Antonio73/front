@@ -12,7 +12,7 @@ export default function LoadCustomeFetchCustomerssComponent() {
 		}
 
 		(async () => {
-			const data = await fetch("http://localhost:3001/api/get").then(
+			const data = await fetch("http://localhost:3002/api/get").then(
 				(res) => res.json()
 			);
 			console.log(data);

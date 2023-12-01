@@ -49,7 +49,7 @@ export function CreateCustomers() {
 			setIsSubmit(true);
 
 			console.log(formValues);
-			fetch("http://localhost:3001/api/create", {
+			fetch("http://localhost:3002/api/create", {
 				method: "POST",
 				body: JSON.stringify(formValues),
 				headers: {

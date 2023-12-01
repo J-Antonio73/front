@@ -18,7 +18,7 @@ function LoadCustomeFetchCustomerssComponent() {
 	const [rows, setRows] = useState([]);
 
 	useEffect(() => {
-		fetch("http://localhost:3001/api/get")
+		fetch("http://localhost:3002/api/get")
 			.then((res) => res.json())
 			.then((res) => {
 				setRows(res);
