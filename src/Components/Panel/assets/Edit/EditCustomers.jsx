@@ -54,13 +54,16 @@ export function EditCustomers() {
 		if (Object.keys(errors).length === 0) {
 			setIsSubmit(true);
 
-			// const res = fetch("http://localhost:3002/api/update", {
-			// 	method: "POST",
-			// 	body: JSON.stringify(formValues),
-			// 	headers: {
-			// 		"Content-Type": "application/json",
-			// 	},
-			// });
+			const res = fetch(
+				`${process.env.REACT_APP_HOST}/api/delete/api/update`,
+				{
+					method: "POST",
+					body: JSON.stringify(formValues),
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			);
 			setFormValues(initialValues);
 
 			setFormErrors({});

@@ -17,7 +17,7 @@ export function QrModal({
 	const generateQR = async () => {
 		setLoading(true);
 		setIsClicked(false);
-		fetch("http://localhost:3002/api/generateqr", {
+		fetch(`${process.env.REACT_APP_HOST}/api/generateqr`, {
 			method: "POST",
 			body: JSON.stringify({ message: campainMessage }),
 			headers: {

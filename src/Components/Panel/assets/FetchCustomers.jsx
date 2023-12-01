@@ -12,9 +12,9 @@ export default function LoadCustomeFetchCustomerssComponent() {
 		}
 
 		(async () => {
-			const data = await fetch("http://localhost:3002/api/get").then(
-				(res) => res.json()
-			);
+			const data = await fetch(
+				`${process.env.REACT_APP_HOST}/api/get`
+			).then((res) => res.json());
 			console.log(data);
 			if (active) {
 				setOptions([...data]);
