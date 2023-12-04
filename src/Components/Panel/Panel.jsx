@@ -17,12 +17,29 @@ import { EditCustomers } from "./assets/Edit/EditCustomers";
 import { CreateCustomers } from "./assets/Create/CreateCustomers";
 import { DeleteCustomers } from "./assets/Delete/DeleteCustomers";
 import { GenerateCampain } from "./assets/Campain/Campain";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Panel.css";
 
 function Panel(props) {
 	const [value, setValue] = useState("customers");
 	const [panelType, setPanelType] = useState("read");
+
+	useEffect(() => {
+		fetch(`${process.env.REACT_APP_HOST}/api/auth`, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => res.json())
+			.then((res) => {
+				if (res.code !== 200) {
+					window.location.href = "/login";
+					localStorage.clear();
+				}
+			});
+	}, []);
 
 	return (
 		<div className="panel">
@@ -36,7 +53,7 @@ function Panel(props) {
 				{panelType === "read" ? (
 					PanelRead({ setValue, value })
 				) : (
-					<PanelCampain />
+					<PanelCampain setPanelType={setPanelType} />
 				)}
 			</div>
 		</div>
@@ -59,14 +76,14 @@ function PanelRead({ setValue, value }) {
 	);
 }
 
-function PanelCampain() {
+function PanelCampain({ setPanelType }) {
 	return (
 		<>
 			<div className="content-header">
 				<h2>Generar una campaña</h2>
 			</div>
 			<div className="content-body">
-				<GenerateCampain />
+				<GenerateCampain setPanelType={setPanelType} />
 			</div>
 		</>
 	);

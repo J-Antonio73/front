@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
-
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 export function QrModal({
 	campainMessage,
 	setIsSubmit,
 	setFormErrors,
 	setCampainMessage,
-	// show,
+	show,
+	setShow,
+	handleClose,
+	setPanelType,
 }) {
 	const [loading, setLoading] = useState(false);
 	const [qr, setQr] = useState("");
 	const [isClicked, setIsClicked] = useState(true);
+	const [msjSend, setMsjSend] = useState(false);
+	const [btnOk, setBtnOk] = useState(false);
 	const handleLoaded = () => {
 		setLoading(false);
 	};
@@ -17,80 +23,86 @@ export function QrModal({
 	const generateQR = async () => {
 		setLoading(true);
 		setIsClicked(false);
-		fetch(`${process.env.REACT_APP_HOST}/api/generateqr`, {
+		fetch(`${process.env.REACT_APP_HOST}/api/panel/generateqr`, {
 			method: "POST",
 			body: JSON.stringify({ message: campainMessage }),
 			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 				"Content-Type": "application/json",
 			},
 		})
 			.then((res) => res.json())
 			.then((data) => {
+				if (data.code === 401) {
+					window.location.href = "/login";
+					return;
+				}
+				if (data.code === "msgsend") {
+					setMsjSend(true);
+					setLoading(false);
+					setIsSubmit(false);
+					setCampainMessage("");
+					setFormErrors({});
+					setBtnOk(true);
+					return;
+				}
 				setQr(data.code);
 				setLoading(false);
 				setCampainMessage("");
 				setIsSubmit(false);
 				setFormErrors({});
+				setBtnOk(true);
 			});
 	};
 
+	const btnsalir = () => {
+		setBtnOk(false);
+		setIsClicked(true);
+		setShow(false);
+		setPanelType("read");
+	};
+
 	return (
-		<div
-			className="modal fade"
-			id="exampleModal"
-			tabIndex="-1"
-			aria-labelledby="exampleModalLabel"
-			aria-hidden="true"
-		>
-			<div className="modal-dialog">
-				<div className="modal-content">
-					<div className="modal-header">
-						<h1 className="modal-title fs-5" id="exampleModalLabel">
-							Enviar campaña
-						</h1>
-						<button
-							type="button"
-							className="btn-close"
-							data-bs-dismiss="modal"
-							aria-label="Close"
-						></button>
+		<Modal show={show} onHide={handleClose}>
+			<Modal.Header closeButton>
+				<Modal.Title>Enviar mensajes.</Modal.Title>
+			</Modal.Header>
+			<Modal.Body className="modal-body d-flex justify-content-center">
+				{isClicked ? (
+					<div>
+						<p>
+							Se enviará el mensaje, en caso que se requiera se
+							solicitará escanear el codigo qr.
+						</p>
 					</div>
-					<div className="modal-body d-flex justify-content-center">
-						{isClicked ? (
-							<div>
-								<p>
-									Se enviará el mensaje, en caso que se
-									requiera se solicitará escanear el codigo
-									qr.
-								</p>
-							</div>
-						) : loading ? (
-							// Muestra el spinner mientras se carga el QR
-							<div className="spinner-border" role="status">
-								<span className="visually-hidden">
-									Loading...
-								</span>
-							</div>
-						) : (
-							// Muestra el QR cuando está listo
-							<img
-								src={`${qr}`}
-								alt="QR Code"
-								onLoad={handleLoaded}
-							/>
-						)}
+				) : loading ? (
+					// Muestra el spinner mientras se carga el QR
+					<div className="spinner-border" role="status">
+						<span className="visually-hidden">Loading...</span>
 					</div>
-					<div className="modal-footer">
-						<button
-							type="button"
-							className="btn btn-secondary"
-							onClick={generateQR}
-						>
-							Enviar
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
+				) : msjSend ? (
+					// Muestra el QR cuando está listo
+					<div>Mensaje enviado</div>
+				) : (
+					<img src={`${qr}`} alt="QR Code" onLoad={handleLoaded} />
+				)}
+			</Modal.Body>
+
+			<Modal.Footer>
+				{btnOk ? (
+					<Button variant="secondary" onClick={btnsalir}>
+						Salir
+					</Button>
+				) : (
+					<Button
+						className="btn btn-secondary"
+						onClick={generateQR}
+						disabled={loading}
+					>
+						Enviar
+					</Button>
+				)}
+			</Modal.Footer>
+		</Modal>
 	);
 }

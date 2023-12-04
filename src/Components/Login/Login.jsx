@@ -24,13 +24,17 @@ function Login() {
 			method: "POST",
 			body: JSON.stringify(formValues),
 			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 				"Content-Type": "application/json",
 			},
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data);
-				localStorage.setItem("user", data.user);
+				if (data.code !== 200) {
+					setFormErrors({ password: data.status });
+
+					return;
+				}
 				localStorage.setItem("token", data.token);
 				window.location.href = "/panel";
 			});
@@ -71,7 +75,7 @@ function Login() {
 								onChange={handleChange}
 							/>
 						</div>
-						<p>{formErrors.username}</p>
+						<p className="text-danger">{formErrors.username}</p>
 						<div className="field">
 							<label>Contraseña</label>
 							<input
@@ -82,7 +86,7 @@ function Login() {
 								onChange={handleChange}
 							/>
 						</div>
-						<p>{formErrors.password}</p>
+						<p className="text-danger">{formErrors.password}</p>
 						<button className="fluid ui button blue">
 							Ingresar
 						</button>

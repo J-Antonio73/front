@@ -6,21 +6,23 @@ import { useState } from "react";
 import { QrModal } from "../../../Modals/QrModal";
 import "./Campain.css";
 
-export function GenerateCampain() {
+export function GenerateCampain({ setPanelType }) {
 	const [campainMessage, setCampainMessage] = useState("");
 	const [formErrors, setFormErrors] = useState({});
 	const [isSubmit, setIsSubmit] = useState(false);
 	const [disabled, setDisabled] = useState(true);
-	const [modalShow, setModalShow] = useState(false);
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 
 	const submitCampain = async () => {
 		if (!campainMessage.trim().length > 0) {
 			setFormErrors({
 				campainMessage: "Ingrese el mensaje de la campaña",
 			});
-			setIsSubmit(true);
 			return;
 		}
+		handleShow();
 	};
 
 	const handleChange = (e) => {
@@ -55,8 +57,6 @@ export function GenerateCampain() {
 					variant="text"
 					disabled={disabled}
 					onClick={submitCampain}
-					data-bs-toggle="modal"
-					data-bs-target="#exampleModal"
 				>
 					Generar campaña
 				</ColorButton>
@@ -66,6 +66,10 @@ export function GenerateCampain() {
 				setIsSubmit={setIsSubmit}
 				setFormErrors={setFormErrors}
 				setCampainMessage={setCampainMessage}
+				show={show}
+				setShow={setShow}
+				handleClose={handleClose}
+				setPanelType={setPanelType}
 			/>
 		</>
 	);

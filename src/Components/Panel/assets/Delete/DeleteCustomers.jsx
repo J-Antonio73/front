@@ -15,10 +15,11 @@ export function DeleteCustomers() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		fetch(`${process.env.REACT_APP_HOST}/api/delete`, {
+		fetch(`${process.env.REACT_APP_HOST}/api/panel/delete`, {
 			method: "POST",
 			body: JSON.stringify(customer),
 			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 				"Content-Type": "application/json",
 			},
 		})

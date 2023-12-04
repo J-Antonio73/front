@@ -13,7 +13,16 @@ export default function LoadCustomeFetchCustomerssComponent() {
 
 		(async () => {
 			const data = await fetch(
-				`${process.env.REACT_APP_HOST}/api/get`
+				`${process.env.REACT_APP_HOST}/api/panel/get`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem(
+							"token"
+						)}`,
+						"Content-Type": "application/json",
+					},
+				}
 			).then((res) => res.json());
 			console.log(data);
 			if (active) {

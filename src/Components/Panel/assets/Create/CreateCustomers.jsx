@@ -34,9 +34,8 @@ export function CreateCustomers() {
 		if (!values.phone) {
 			errors.phone = "Ingrese el teléfono del cliente";
 		}
-		if (!regex.test(values.email)) {
-			errors.email = "Correo inválido";
-		}
+		if (values.email.trim().length > 0)
+			if (!regex.test(values.email)) errors.email = "Correo inválido";
 
 		return errors;
 	};
@@ -49,10 +48,11 @@ export function CreateCustomers() {
 			setIsSubmit(true);
 
 			console.log(formValues);
-			fetch(`${process.env.REACT_APP_HOST}/api/create`, {
+			fetch(`${process.env.REACT_APP_HOST}/api/panel/create`, {
 				method: "POST",
 				body: JSON.stringify(formValues),
 				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
 					"Content-Type": "application/json",
 				},
 			})

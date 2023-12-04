@@ -18,7 +18,12 @@ function LoadCustomeFetchCustomerssComponent() {
 	const [rows, setRows] = useState([]);
 
 	useEffect(() => {
-		fetch(`${process.env.REACT_APP_HOST}/api/get`)
+		fetch(`${process.env.REACT_APP_HOST}/api/panel/get`, {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+				"Content-Type": "application/json",
+			},
+		})
 			.then((res) => res.json())
 			.then((res) => {
 				setRows(res);

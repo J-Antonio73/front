@@ -4,13 +4,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../Components/Login/Login";
 import Campain from "../Components/Campain/Campain";
 import Panel from "../Components/Panel/Panel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Auth } from "../Components/Auth/Auth";
 
 function App() {
-	const [user, setUser] = useState(localStorage.getItem("user"));
-
-	console.log(user);
+	const [user, setUser] = useState(localStorage.getItem("token"));
 
 	return (
 		<BrowserRouter>

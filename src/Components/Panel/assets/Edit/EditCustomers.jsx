@@ -55,11 +55,14 @@ export function EditCustomers() {
 			setIsSubmit(true);
 
 			const res = fetch(
-				`${process.env.REACT_APP_HOST}/api/delete/api/update`,
+				`${process.env.REACT_APP_HOST}/api/panel/update`,
 				{
 					method: "POST",
 					body: JSON.stringify(formValues),
 					headers: {
+						Authorization: `Bearer ${localStorage.getItem(
+							"token"
+						)}`,
 						"Content-Type": "application/json",
 					},
 				}
