@@ -3,9 +3,11 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 export function QrModal({
 	campainMessage,
+	selectedImage,
 	setIsSubmit,
 	setFormErrors,
 	setCampainMessage,
+	setSelectedImage,
 	show,
 	setShow,
 	handleClose,
@@ -23,9 +25,10 @@ export function QrModal({
 	const generateQR = async () => {
 		setLoading(true);
 		setIsClicked(false);
+
 		fetch(`${process.env.REACT_APP_HOST}/api/panel/generateqr`, {
 			method: "POST",
-			body: JSON.stringify({ message: campainMessage }),
+			body: JSON.stringify({ message: campainMessage, image: selectedImage }),
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 				"Content-Type": "application/json",
@@ -42,6 +45,7 @@ export function QrModal({
 					setLoading(false);
 					setIsSubmit(false);
 					setCampainMessage("");
+					setSelectedImage("");
 					setFormErrors({});
 					setBtnOk(true);
 					return;

@@ -14,6 +14,8 @@ export function GenerateCampain({ setPanelType }) {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [base64Image, setBase64Image] = useState('');
 
 	const submitCampain = async () => {
 		if (!campainMessage.trim().length > 0) {
@@ -22,6 +24,17 @@ export function GenerateCampain({ setPanelType }) {
 			});
 			return;
 		}
+		
+		if (selectedImage) {
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setBase64Image(reader.result);
+
+				console.log("Imagen convertida a base64:", reader.result);
+			};
+			reader.readAsDataURL(selectedImage);
+		}
+
 		handleShow();
 	};
 
@@ -35,15 +48,35 @@ export function GenerateCampain({ setPanelType }) {
 		setDisabled(false);
 	};
 
+	const handleFileChange = (e) => {
+		const file = e.target.files[0];
+		setSelectedImage(file);
+	};
+
 	return (
 		<>
 			<div className="campain-container hv">
+
+				<label htmlFor="fileInput" sx={{ marginTop: '1rem', display: 'block' }}>
+				Seleccione una imagen <small><i>(opcional)</i></small>:
+				<input
+					type="file"
+					id="fileInput"
+					name={selectedImage}
+    				onChange={(e) => {
+						handleFileChange(e);
+					}}
+					accept="image/*"
+					sx={{ display: 'none' }}
+				/>
+				</label>
+
 				<TextField
 					sx={{ width: "60%", marginLeft: "20%", marginRight: "20%" }}
 					id="outlined-multiline-flexible"
 					label="Escriba su mensaje"
 					multiline
-					rows={10}
+					rows={7}
 					value={campainMessage}
 					error={isSubmit}
 					helperText={formErrors.campainMessage}
@@ -63,9 +96,11 @@ export function GenerateCampain({ setPanelType }) {
 			</div>
 			<QrModal
 				campainMessage={campainMessage}
+				selectedImage={base64Image}
 				setIsSubmit={setIsSubmit}
 				setFormErrors={setFormErrors}
 				setCampainMessage={setCampainMessage}
+				setSelectedImage={setSelectedImage}
 				show={show}
 				setShow={setShow}
 				handleClose={handleClose}
