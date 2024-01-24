@@ -9,10 +9,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use((req, res, next) => {
-	res.setHeader(
-		"Access-Control-Allow-Origin",
-		`${process.env.REACT_APP_HOST}`
-	);
+	res.setHeader("Access-Control-Allow-Origin", `*`);
 	res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
 	res.setHeader(
 		"Access-Control-Allow-Headers",
