@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const port = process.env.PORT || 9000;
 const app = express();
+const bodyParser = require("body-parser");
 const cors = require("cors");
 
 app.use(bodyParser.json({ limit: "50mb" }));
