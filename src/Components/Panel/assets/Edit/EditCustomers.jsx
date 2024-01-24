@@ -5,7 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import FetchCustomers from "../FetchCustomers";
 import { styled } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
-import { useState, Fragment, useEffect } from "react";
+import { useState, Fragment } from "react";
 import "./EditCustomers";
 
 export function EditCustomers() {
@@ -53,7 +53,7 @@ export function EditCustomers() {
 		const errors = validate(formValues);
 		if (Object.keys(errors).length === 0) {
 			setIsSubmit(true);
-
+			// eslint-disable-next-line
 			const res = fetch(
 				`${process.env.REACT_APP_HOST}/api/panel/update`,
 				{

@@ -4,10 +4,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../Components/Login/Login";
 import Campain from "../Components/Campain/Campain";
 import Panel from "../Components/Panel/Panel";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Auth } from "../Components/Auth/Auth";
 
 function App() {
+	// eslint-disable-next-line
 	const [user, setUser] = useState(localStorage.getItem("token"));
 
 	return (

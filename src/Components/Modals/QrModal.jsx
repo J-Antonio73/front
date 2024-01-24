@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 export function QrModal({
@@ -28,7 +28,10 @@ export function QrModal({
 
 		fetch(`${process.env.REACT_APP_HOST}/api/panel/generateqr`, {
 			method: "POST",
-			body: JSON.stringify({ message: campainMessage, image: selectedImage }),
+			body: JSON.stringify({
+				message: campainMessage,
+				image: selectedImage,
+			}),
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 				"Content-Type": "application/json",

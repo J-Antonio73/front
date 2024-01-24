@@ -19,7 +19,7 @@ function Login() {
 		e.preventDefault();
 		setFormErrors(validate(formValues));
 		setIsSubmit(true);
-
+		// eslint-disable-next-line
 		const res = fetch(`${process.env.REACT_APP_HOST}/api/login`, {
 			method: "POST",
 			body: JSON.stringify(formValues),

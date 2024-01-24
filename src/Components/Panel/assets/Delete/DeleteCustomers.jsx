@@ -5,7 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import FetchCustomers from "../FetchCustomers";
 import { styled } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
-import { useState, Fragment, useEffect } from "react";
+import { useState, Fragment } from "react";
 import "./DeleteCustomers";
 
 export function DeleteCustomers() {
