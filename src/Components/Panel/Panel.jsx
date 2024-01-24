@@ -113,12 +113,12 @@ function LabelBottomNavigation({ setValue, value }) {
 			<BottomNavigationAction
 				label="Editar"
 				value="edit"
-				icon={<PersonRemoveIcon />}
+				icon={<ManageAccountsIcon />}
 			/>
 			<BottomNavigationAction
 				label="Eliminar"
 				value="Delete"
-				icon={<ManageAccountsIcon />}
+				icon={<PersonRemoveIcon />}
 			/>
 		</BottomNavigation>
 	);
