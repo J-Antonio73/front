@@ -15,7 +15,7 @@ export function GenerateCampain({ setPanelType }) {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 	const [selectedImage, setSelectedImage] = useState(null);
-	const [base64Image, setBase64Image] = useState('');
+	const [base64Image, setBase64Image] = useState("");
 
 	const submitCampain = async () => {
 		if (!campainMessage.trim().length > 0) {
@@ -24,14 +24,10 @@ export function GenerateCampain({ setPanelType }) {
 			});
 			return;
 		}
-		
+
 		if (selectedImage) {
 			const reader = new FileReader();
-			reader.onloadend = () => {
-				setBase64Image(reader.result);
-
-				console.log("Imagen convertida a base64:", reader.result);
-			};
+			reader.onloadend = () => setBase64Image(reader.result);
 			reader.readAsDataURL(selectedImage);
 		}
 
@@ -56,19 +52,25 @@ export function GenerateCampain({ setPanelType }) {
 	return (
 		<>
 			<div className="campain-container hv">
-
-				<label htmlFor="fileInput" sx={{ marginTop: '1rem', display: 'block' }}>
-				Seleccione una imagen <small><i>(opcional)</i></small>:
-				<input
-					type="file"
-					id="fileInput"
-					name={selectedImage}
-    				onChange={(e) => {
-						handleFileChange(e);
-					}}
-					accept="image/*"
-					sx={{ display: 'none' }}
-				/>
+				<label
+					htmlFor="fileInput"
+					sx={{ marginTop: "1rem", display: "block" }}
+				>
+					Seleccione una imagen{" "}
+					<small>
+						<i>(opcional)</i>
+					</small>
+					:
+					<input
+						type="file"
+						id="fileInput"
+						name={selectedImage}
+						onChange={(e) => {
+							handleFileChange(e);
+						}}
+						accept="image/*, video/mp4"
+						sx={{ display: "none" }}
+					/>
 				</label>
 
 				<TextField
