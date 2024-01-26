@@ -16,6 +16,13 @@ export function CreateCustomers() {
 	const [formValues, setFormValues] = useState(initialValues);
 	const [formErrors, setFormErrors] = useState({});
 	const [isSubmit, setIsSubmit] = useState(false);
+	const [selectedImage, setSelectedImage] = useState(null);
+
+	const handleFileChange = (e) => {
+		const file = e.target.files[0];
+		console.log(file);
+		setSelectedImage(file);
+	};
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -50,7 +57,7 @@ export function CreateCustomers() {
 			console.log(formValues);
 			fetch(`${process.env.REACT_APP_HOST}/api/panel/create`, {
 				method: "POST",
-				body: JSON.stringify(formValues),
+				body: JSON.stringify({ formValues, selectedImage }),
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
 					"Content-Type": "application/json",
@@ -71,6 +78,26 @@ export function CreateCustomers() {
 
 	return (
 		<div className="create-container">
+			<label
+				htmlFor="fileInput"
+				sx={{ marginTop: "1rem", display: "block" }}
+			>
+				Seleccione una imagen{" "}
+				<small>
+					<i>(opcional)</i>
+				</small>
+				:
+				<input
+					type="file"
+					id="contactsFile"
+					name={selectedImage}
+					onChange={(e) => {
+						handleFileChange(e);
+					}}
+					accept=".xlsx"
+					sx={{ display: "none" }}
+				/>
+			</label>
 			<TextField
 				sx={{
 					marginBottom: "1rem",
