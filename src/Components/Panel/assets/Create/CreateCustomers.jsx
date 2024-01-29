@@ -16,12 +16,10 @@ export function CreateCustomers() {
 	const [formValues, setFormValues] = useState(initialValues);
 	const [formErrors, setFormErrors] = useState({});
 	const [isSubmit, setIsSubmit] = useState(false);
-	const [selectedImage, setSelectedImage] = useState(null);
+	const [selectedFile, setSelectedFile] = useState(null);
 
 	const handleFileChange = (e) => {
-		const file = e.target.files[0];
-		console.log(file);
-		setSelectedImage(file);
+		if (e.target.files) setSelectedFile(e.target.files[0]);
 	};
 
 	const handleChange = (e) => {
@@ -54,13 +52,16 @@ export function CreateCustomers() {
 			// No hay errores, entonces se puede enviar el formulario
 			setIsSubmit(true);
 
-			console.log(formValues);
+			const dataSend = new FormData();
+			dataSend.append("data", JSON.stringify(formValues));
+			dataSend.append("file", selectedFile);
 			fetch(`${process.env.REACT_APP_HOST}/api/panel/create`, {
 				method: "POST",
-				body: JSON.stringify({ formValues, selectedImage }),
+				body: dataSend,
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
-					"Content-Type": "application/json",
+					// "Content-Type":
+					// "multipart/form-data; boundary=---------------------------WebKitFormBoundaryh9UF2hFjspgvNh9T--;",
 				},
 			})
 				.then((res) => res.json())
@@ -90,7 +91,7 @@ export function CreateCustomers() {
 				<input
 					type="file"
 					id="contactsFile"
-					name={selectedImage}
+					name={selectedFile}
 					onChange={(e) => {
 						handleFileChange(e);
 					}}
