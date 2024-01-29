@@ -16,6 +16,11 @@ export function CreateCustomers() {
 	const [formValues, setFormValues] = useState(initialValues);
 	const [formErrors, setFormErrors] = useState({});
 	const [isSubmit, setIsSubmit] = useState(false);
+	const [selectedFile, setSelectedFile] = useState(null);
+
+	const handleFileChange = (e) => {
+		if (e.target.files) setSelectedFile(e.target.files[0]);
+	};
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -47,13 +52,16 @@ export function CreateCustomers() {
 			// No hay errores, entonces se puede enviar el formulario
 			setIsSubmit(true);
 
-			console.log(formValues);
+			const dataSend = new FormData();
+			dataSend.append("data", JSON.stringify(formValues));
+			dataSend.append("file", selectedFile);
 			fetch(`${process.env.REACT_APP_HOST}/api/panel/create`, {
 				method: "POST",
-				body: JSON.stringify(formValues),
+				body: dataSend,
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem("token")}`,
-					"Content-Type": "application/json",
+					// "Content-Type":
+					// "multipart/form-data; boundary=---------------------------WebKitFormBoundaryh9UF2hFjspgvNh9T--;",
 				},
 			})
 				.then((res) => res.json())
@@ -71,6 +79,26 @@ export function CreateCustomers() {
 
 	return (
 		<div className="create-container">
+			<label
+				htmlFor="fileInput"
+				sx={{ marginTop: "1rem", display: "block" }}
+			>
+				Seleccione una imagen{" "}
+				<small>
+					<i>(opcional)</i>
+				</small>
+				:
+				<input
+					type="file"
+					id="contactsFile"
+					name={selectedFile}
+					onChange={(e) => {
+						handleFileChange(e);
+					}}
+					accept=".xlsx"
+					sx={{ display: "none" }}
+				/>
+			</label>
 			<TextField
 				sx={{
 					marginBottom: "1rem",
