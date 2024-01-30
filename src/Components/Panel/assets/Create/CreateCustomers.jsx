@@ -2,6 +2,9 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 import { useState } from "react";
 import "./CreateCustomers.css";
 
@@ -17,6 +20,8 @@ export function CreateCustomers() {
 	const [formErrors, setFormErrors] = useState({});
 	const [isSubmit, setIsSubmit] = useState(false);
 	const [selectedFile, setSelectedFile] = useState(null);
+	const [fileDisabled, setFileDisabled] = useState(true);
+	const [formDisabled, setFormDisabled] = useState(false);
 
 	const handleFileChange = (e) => {
 		if (e.target.files) setSelectedFile(e.target.files[0]);
@@ -48,13 +53,23 @@ export function CreateCustomers() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const errors = validate(formValues);
-		if (Object.keys(errors).length === 0) {
+		if (Object.keys(errors).length === 0 || formDisabled) {
 			// No hay errores, entonces se puede enviar el formulario
 			setIsSubmit(true);
 
 			const dataSend = new FormData();
-			dataSend.append("data", JSON.stringify(formValues));
-			dataSend.append("file", selectedFile);
+			if (!formDisabled) {
+				dataSend.append("data", JSON.stringify(formValues));
+				console.log("data");
+			} else {
+				dataSend.append("file", selectedFile);
+				console.log("file");
+			}
+
+			if (!dataSend.has("data") && !dataSend.has("file")) {
+				return;
+			}
+
 			fetch(`${process.env.REACT_APP_HOST}/api/panel/create`, {
 				method: "POST",
 				body: dataSend,
@@ -79,11 +94,23 @@ export function CreateCustomers() {
 
 	return (
 		<div className="create-container">
+			<div>
+				<FormGroup>
+					<FormControlLabel
+						control={<Switch />}
+						onChange={(e) => {
+							setFileDisabled(!fileDisabled);
+							setFormDisabled(!formDisabled);
+						}}
+						label="Cargar contactos con archivo xlsx."
+					/>
+				</FormGroup>
+			</div>
 			<label
 				htmlFor="fileInput"
 				sx={{ marginTop: "1rem", display: "block" }}
 			>
-				Seleccione una imagen{" "}
+				Seleccione un archivo xlsx{" "}
 				<small>
 					<i>(opcional)</i>
 				</small>
@@ -92,6 +119,7 @@ export function CreateCustomers() {
 					type="file"
 					id="contactsFile"
 					name={selectedFile}
+					disabled={fileDisabled}
 					onChange={(e) => {
 						handleFileChange(e);
 					}}
@@ -112,6 +140,7 @@ export function CreateCustomers() {
 				variant="outlined"
 				value={formValues.firstname}
 				onChange={handleChange}
+				disabled={formDisabled}
 				error={formErrors.firstname && isSubmit}
 				helperText={formErrors.firstname}
 			/>
@@ -125,6 +154,7 @@ export function CreateCustomers() {
 				variant="outlined"
 				value={formValues.lastname}
 				onChange={handleChange}
+				disabled={formDisabled}
 				error={formErrors.lastname && isSubmit}
 				helperText={formErrors.lastname}
 			/>
@@ -138,6 +168,7 @@ export function CreateCustomers() {
 				variant="outlined"
 				value={formValues.phone}
 				onChange={handleChange}
+				disabled={formDisabled}
 				error={formErrors.phone && isSubmit}
 				helperText={formErrors.phone}
 			/>
@@ -150,6 +181,7 @@ export function CreateCustomers() {
 				variant="outlined"
 				value={formValues.email}
 				onChange={handleChange}
+				disabled={formDisabled}
 				error={formErrors.email && isSubmit}
 				helperText={formErrors.email}
 			/>
