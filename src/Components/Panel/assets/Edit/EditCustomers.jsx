@@ -1,11 +1,16 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import FetchCustomers from "../FetchCustomers";
 import { styled } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
+import { distritosManzanillo } from "../../assets/distritos";
 import "./EditCustomers";
 
 export function EditCustomers() {
@@ -15,6 +20,7 @@ export function EditCustomers() {
 		phone: "",
 		email: "",
 		id: "",
+		dist: "",
 	};
 
 	const [formValues, setFormValues] = useState(initialValues);
@@ -23,8 +29,11 @@ export function EditCustomers() {
 	const [disabled, setDisabled] = useState(true);
 	const [value, setValue] = useState(null);
 
+	const [distList, setDistList] = useState(distritosManzanillo);
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
+		console.log(name, value);
 		setFormValues({ ...formValues, [name]: value });
 	};
 
@@ -147,6 +156,24 @@ export function EditCustomers() {
 				error={formErrors.email && isSubmit}
 				helperText={formErrors.email}
 			/>
+			<FormControl sx={{ width: 100 }}>
+				<InputLabel id="demo-simple-select-label">Distrito</InputLabel>
+				<Select
+					labelId="demo-simple-select-label"
+					disabled={disabled}
+					id="demo-simple-select"
+					value={formValues.dist}
+					label="Distrito"
+					name="dist"
+					onChange={handleChange}
+				>
+					{distList.map((dist) => (
+						<MenuItem key={dist.id} value={dist.id}>
+							{dist.id}
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
 
 			<ColorButton
 				sx={{ width: "8rem" }}
@@ -193,6 +220,7 @@ function LoadCustomers({
 			phone: newValue.phone,
 			email: newValue.email,
 			id: newValue.id,
+			dist: newValue.group,
 		});
 		setValue(newValue);
 		setFormErrors({});

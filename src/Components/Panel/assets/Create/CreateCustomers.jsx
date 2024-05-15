@@ -1,11 +1,16 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { distritosManzanillo } from "../../assets/distritos";
 import "./CreateCustomers.css";
 
 export function CreateCustomers() {
@@ -14,6 +19,7 @@ export function CreateCustomers() {
 		lastname: "",
 		phone: "",
 		email: "",
+		dist: 0,
 	};
 
 	const [formValues, setFormValues] = useState(initialValues);
@@ -22,6 +28,11 @@ export function CreateCustomers() {
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [fileDisabled, setFileDisabled] = useState(true);
 	const [formDisabled, setFormDisabled] = useState(false);
+
+	const [dist, setDist] = useState(0);
+	const [distList, setDistList] = useState(distritosManzanillo);
+
+	const handleDistChange = (e) => setDist(e.target.value);
 
 	const handleFileChange = (e) => {
 		if (e.target.files) setSelectedFile(e.target.files[0]);
@@ -185,6 +196,23 @@ export function CreateCustomers() {
 				error={formErrors.email && isSubmit}
 				helperText={formErrors.email}
 			/>
+
+			<FormControl sx={{ width: 100 }}>
+				<InputLabel id="demo-simple-select-label">Distrito</InputLabel>
+				<Select
+					labelId="demo-simple-select-label"
+					id="demo-simple-select"
+					value={dist}
+					label="Distrito"
+					onChange={handleDistChange}
+				>
+					{distList.map((dist) => (
+						<MenuItem key={dist.id} value={dist.id}>
+							{dist.id}
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
 
 			<ColorButton
 				sx={{ width: "8rem" }}

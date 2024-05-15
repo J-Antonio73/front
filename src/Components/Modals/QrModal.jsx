@@ -12,6 +12,7 @@ export function QrModal({
 	setShow,
 	handleClose,
 	setPanelType,
+	dist,
 }) {
 	const [loading, setLoading] = useState(false);
 	const [qr, setQr] = useState("");
@@ -31,6 +32,7 @@ export function QrModal({
 			body: JSON.stringify({
 				message: campainMessage,
 				image: selectedImage,
+				dist: dist,
 			}),
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,

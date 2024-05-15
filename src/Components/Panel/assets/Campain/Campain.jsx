@@ -1,9 +1,14 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { QrModal } from "../../../Modals/QrModal";
+import { distritosManzanillo } from "../../assets/distritos";
 import "./Campain.css";
 
 export function GenerateCampain({ setPanelType }) {
@@ -16,6 +21,10 @@ export function GenerateCampain({ setPanelType }) {
 	const handleShow = () => setShow(true);
 	const [selectedImage, setSelectedImage] = useState(null);
 	const [base64Image, setBase64Image] = useState("");
+	const [dist, setDist] = useState(0);
+	const [distList, setDistList] = useState(distritosManzanillo);
+
+	const handleDistChange = (e) => setDist(e.target.value);
 
 	const submitCampain = async () => {
 		if (!campainMessage.trim().length > 0) {
@@ -52,6 +61,26 @@ export function GenerateCampain({ setPanelType }) {
 	return (
 		<>
 			<div className="campain-container hv">
+				<>
+					<FormControl sx={{ width: 100 }}>
+						<InputLabel id="demo-simple-select-label">
+							Distrito
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							value={dist}
+							label="Distrito"
+							onChange={handleDistChange}
+						>
+							{distList.map((dist) => (
+								<MenuItem key={dist.id} value={dist.id}>
+									{dist.id}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				</>
 				<label
 					htmlFor="fileInput"
 					sx={{ marginTop: "1rem", display: "block" }}
@@ -107,6 +136,7 @@ export function GenerateCampain({ setPanelType }) {
 				setShow={setShow}
 				handleClose={handleClose}
 				setPanelType={setPanelType}
+				dist={dist}
 			/>
 		</>
 	);

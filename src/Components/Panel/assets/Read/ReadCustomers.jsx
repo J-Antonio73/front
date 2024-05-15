@@ -12,6 +12,7 @@ const columns = [
 	{ id: "fullname", label: "Nombre", minWidth: 120 },
 	{ id: "phone", label: "Telefono", minWidth: 100 },
 	{ id: "email", label: "Correo", minWidth: 120 },
+	{ id: "group", label: "Grupo", minWidth: 100 },
 ];
 
 function LoadCustomeFetchCustomerssComponent() {
@@ -52,7 +53,7 @@ function ColumnGroupingTable() {
 		<>
 			<h2>Lista de clientes</h2>
 			<Paper sx={{ width: "100%" }}>
-				<TableContainer sx={{ maxHeight: 440 }}>
+				<TableContainer sx={{ maxHeight: 600 }}>
 					<Table stickyHeader aria-label="sticky table">
 						<TableHead>
 							<TableRow>
