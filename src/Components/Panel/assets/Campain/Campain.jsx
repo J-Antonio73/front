@@ -75,7 +75,7 @@ export function GenerateCampain({ setPanelType }) {
 						>
 							{distList.map((dist) => (
 								<MenuItem key={dist.id} value={dist.id}>
-									{dist.id}
+									{dist.name}
 								</MenuItem>
 							))}
 						</Select>
