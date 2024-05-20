@@ -27,12 +27,12 @@ export function GenerateCampain({ setPanelType }) {
   const handleDistChange = (e) => setDist(e.target.value);
 
   const submitCampain = async () => {
-    if (!campainMessage.trim().length > 0) {
-      setFormErrors({
-        campainMessage: "Ingrese el mensaje de la campaña",
-      });
-      return;
-    }
+    // if (!campainMessage.trim().length > 0) {
+      // setFormErrors({
+        // campainMessage: "Ingrese el mensaje de la campaña",
+      // });
+      // return;
+    // }
 
     if (selectedImage) {
       const reader = new FileReader();
